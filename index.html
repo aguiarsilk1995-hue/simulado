@@ -105,11 +105,15 @@ dialog ul{margin:0 0 18px; padding-left:20px; line-height:1.6}
 .dots{flex-wrap:nowrap !important; gap:6px !important; justify-content:space-between}
 .dot{flex:1 1 0; min-width:0; max-width:34px; width:auto; height:auto; aspect-ratio:1/1; font-size:13px}
 :root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+.clock-bar{position:sticky; top:12px; z-index:8; display:flex; justify-content:center; margin-bottom:14px; pointer-events:none}
+.clock-bar .alert{pointer-events:auto; box-shadow:0 2px 8px rgba(58,74,143,.18); font-weight:500}
+@media (max-width:900px){ .clock-bar{position:fixed; top:auto; bottom:calc(10px + env(safe-area-inset-bottom,0px)); left:0; right:0; margin:0} }
 </style>
 </head>
 <body>
 <div class="layout">
   <main id="main">
+    <div class="clock-bar"><span class="alert">⚠ Horário oficial: <span id="clock"></span></span></div>
     <div id="result" class="card result hidden"></div>
     <div id="questions"></div>
   </main>
@@ -165,63 +169,63 @@ const STORAGE_KEY = "simulado_v1";
    apoio (opcional) = texto de apoio exibido acima da questão. */
 const QUESTOES = [
   {
-    codigo: "0001",
+    codigo: "235789",
     enunciado: "Considere, no plano cartesiano, o triângulo retângulo determinado pelos eixos coordenados e pela reta de equação 12x + 5y = 60. Qual é a área desse triângulo, em m²? Assinale a alternativa correta.",
     alternativas: ["20.", "30.", "40.", "50.", "60."],
     correta: 1
   },
   {
-    codigo: "0002",
+    codigo: "235790",
     enunciado: "Determine a equação geral do plano que contém o ponto P(2, −2, 4) e cujo vetor normal seja dado por n = (−1, 2, 0). Assinale a alternativa correta.",
     alternativas: ["−x + y + 4 = 0.", "−x + 2y + 6 = 0.", "−2x + 3y + 5 = 0.", "2x + 2y + 4 = 0.", "x + y + 5 = 0."],
     correta: 1
   },
   {
-    codigo: "0003",
+    codigo: "235791",
     enunciado: "Sejam os planos α₁: x + my + 2z − 7 = 0 e α₂: 4x + 5y + 3z + 2 = 0. Quais são os valores de m para que o ângulo entre os planos seja de 30°? Assinale a alternativa correta.",
     alternativas: ["m = 4 e m = 3.", "m = 1 e m = 7.", "m = 9 e m = 8.", "m = 5 e m = 2.", "m = 0 e m = 6."],
     correta: 1
   },
   {
-    codigo: "0004",
+    codigo: "235792",
     enunciado: "Sejam P(3m + 1, 15) e Q(m, 3) pontos pertencentes ao segundo quadrante que distam 13 cm. Qual o valor de m? Assinale a alternativa correta.",
     alternativas: ["−5.", "−4.", "2.", "−3.", "6."],
     correta: 3
   },
   {
-    codigo: "0005",
+    codigo: "235793",
     apoio: "A equação geral da reta em um plano cartesiano pode ser expressa de diferentes formas, sendo uma das mais conhecidas a forma linear. Ela tem diversas aplicações em diferentes áreas, como matemática, física, engenharia, estatística e computação. Em geometria analítica, permite descrever linhas em um plano cartesiano e estudar propriedades geométricas, como inclinação e interseções com os eixos. Em física, a equação da reta é frequentemente usada para modelar fenômenos lineares, como movimento retilíneo uniforme. Em cinemática, por exemplo, a posição de um objeto em relação ao tempo pode ser descrita por uma equação da reta. A equação da reta é usada em várias disciplinas de engenharia para modelar e analisar sistemas lineares, como circuitos elétricos, análise de estruturas, controle de sistemas dinâmicos, entre outros. Essas são apenas algumas das muitas aplicações da equação da reta em diversas áreas. A sua versatilidade a torna uma ferramenta essencial para modelagem e análise em muitos campos diferentes.",
     enunciado: "Para montar uma casa no estilo enxaimel, casas típicas de Joinville, Santa Catarina, sua empresa instalou duas vigas de madeira para montar o telhado. A primeira passa pelos pontos A(1, 4) e B(−3, −8). Já a segunda, pelos pontos C(2, −4) e D(−1, 11). Você precisa determinar o ângulo exato entre as vigas para poder instalar o telhado e projetar o restante da casa. Qual seria esse ângulo? Assinale a alternativa correta.",
     alternativas: ["Aproximadamente 15,2°.", "Aproximadamente 29,7°.", "Aproximadamente 32,4°.", "Aproximadamente 46,8°.", "Aproximadamente 52,7°."],
     correta: 1
   },
   {
-    codigo: "0006",
+    codigo: "235794",
     enunciado: "Determine o valor de α para que o vetor u = (−1, α, −7) seja combinação linear dos vetores u₁ = (1, −3, 2) e u₂ = (2, 4, −1). Assinale a alternativa correta.",
     alternativas: ["α = 18.", "α = −21.", "α = −11.", "α = 24.", "α = 13."],
     correta: 4
   },
   {
-    codigo: "0007",
+    codigo: "235795",
     apoio: "O produto escalar, também conhecido como produto interno ou produto ponto, é uma operação matemática entre dois vetores que resulta em um número real. Uma aplicação importante do produto escalar é o cálculo do ângulo entre dois vetores.",
     enunciado: "Considere os vetores a = −î + 6ĵ + k̂ e d = î + 2ĵ + 3k̂. Encontre o ângulo entre os dois vetores. Assinale a alternativa correta.",
     alternativas: ["Aproximadamente 42°.", "Aproximadamente 25°.", "Aproximadamente 30°.", "Aproximadamente 15°.", "Aproximadamente 53°."],
     correta: 4
   },
   {
-    codigo: "0008",
+    codigo: "235796",
     enunciado: "Considere os conjuntos de vetores em ℝ³ abaixo.<br>(I) v₁ = sen²x, v₂ = cos²x, v₃ = 2<br>(II) v₁ = 1 − x − x², v₂ = x, v₃ = 1<br>(III) v₁ = 2 − x, v₂ = 2x², v₃ = −x<br><br>Analise as afirmativas abaixo.<br>I. Os conjuntos (I), (II) e (III) são linearmente dependentes.<br>II. Os conjuntos (I), (II) e (III) são linearmente independentes.<br>III. O conjunto (II) é linearmente dependente.<br><br>Assinale a alternativa correta.",
     alternativas: ["Apenas a afirmativa I está correta.", "Apenas a afirmativa II está correta.", "Apenas a afirmativa III está correta.", "Apenas as afirmativas I, II e III estão corretas.", "Apenas as afirmativas II e III estão corretas."],
     correta: 2
   },
   {
-    codigo: "0009",
+    codigo: "235797",
     enunciado: "Considere os vetores u = 2î − 3ĵ − 6k̂ e v = 3î − 4ĵ − 4k̂. Determine a norma da projeção de u sobre v. Assinale a alternativa correta.",
     alternativas: ["3,98.", "4,21.", "5,06.", "6,56.", "7,14."],
     correta: 3
   },
   {
-    codigo: "0010",
+    codigo: "235798",
     apoio: "Uma combinação linear de vetores é uma expressão matemática que envolve a multiplicação de cada vetor por um escalar correspondente e, em seguida, somando todos esses resultados.",
     enunciado: "Observe os escalares p, q, r ∈ ℝ, tais que (1, 2, 3) = p(1, 0, 0) + q(1, 1, 0) + r(1, 1, 1). Qual o valor da expressão 2p + 3q − r? Assinale a alternativa correta.",
     alternativas: ["16.", "9.", "15.", "−8.", "−13."],
@@ -265,7 +269,7 @@ function render(){
     sec.className = "card q" + (state.finalizado ? " locked" : "");
     sec.id = "q" + i;
     let html = `<div class="q-head"><h3>Questão ${i+1}</h3>`;
-    if(i===0) html += `<span class="alert">⚠ Horário oficial: <span id="clock"></span></span>`;
+    
     html += `</div><div class="q-code">Código da questão: ${q.codigo}</div><p class="q-text">${q.enunciado}</p><div class="opts">`;
     q.alternativas.forEach((a,j)=>{
       let cls = "opt";
